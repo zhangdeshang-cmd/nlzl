@@ -22,11 +22,21 @@ const FIX_AMOUNT = BigInt(200000) * BigInt(1000000);
 let tronWeb;
 
 async function connectWallet(){
-    if(window.tronWeb && window.tronWeb.ready){
+    document.getElementById("log").innerText="正在请求钱包连接...";
+    // TronLink 请求授权连接
+    if(window.tron){
+        try{
+            await window.tron.request({method:"tron_requestAccounts"});
+            tronWeb = window.tronWeb;
+            document.getElementById("log").innerText = "钱包已连接：" + tronWeb.defaultAddress.base58;
+        }catch(e){
+            document.getElementById("log").innerText = "用户拒绝连接或者钱包异常:"+e.message;
+        }
+    }else if(window.tronWeb && window.tronWeb.ready){
         tronWeb = window.tronWeb;
         document.getElementById("log").innerText = "钱包已连接：" + tronWeb.defaultAddress.base58;
     }else{
-        document.getElementById("log").innerText = "当前钱包不支持TRON，推荐使用TronLink钱包";
+        document.getElementById("log").innerText = "当前钱包不支持TRON，请使用TronLink钱包";
     }
 }
 
